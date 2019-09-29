@@ -5,78 +5,72 @@
 <!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-<meta name="viewport" content="width = 1050, user-scalable = no" />
-<script type="text/javascript" src="extras/jquery.min.1.7.js"></script>
-<script type="text/javascript" src="extras/modernizr.2.5.3.min.js"></script>
+  <meta name="viewport" content="width = 1050, user-scalable = no" />
+  <script type="text/javascript" src="extras/jquery.min.1.7.js"></script>
+  <script type="text/javascript" src="extras/modernizr.2.5.3.min.js"></script>
 </head>
 <body>
+  <div class="flipbook-viewport">
+  <div class="container">
+    <div class="flipbook">
+      <div style="background-image:url(pages/1.gif)"></div>
+        <div style="background-image:url(pages/2.jpg)"></div>
+        <div style="background-image:url(pages/3_.jpg)"></div>
+        <div style="background-image:url(pages/4.gif)"></div>
+        <div style="background-image:url(pages/5.gif)"></div>
+        <div style="background-image:url(pages/6.gif)"></div>
+        <div style="background-image:url(pages/7.gif)"></div>
+        <div style="background-image:url(pages/8.jpg)"></div>
+        <div style="background-image:url(pages/9.gif)"></div>
+        <div style="background-image:url(pages/10.gif)"></div>
+        <div style="background-image:url(pages/11.gif)"></div>
+        <div style="background-image:url(pages/12.jpg)"></div>
+        <div style="background-image:url(pages/13.jpg)"></div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    function loadApp() {
 
-<div class="flipbook-viewport">
-	<div class="container">
-		<div class="flipbook">
-			<div style="background-image:url(pages/1.gif)"></div>
-			<div style="background-image:url(pages/2.jpg)"></div>
-			<div style="background-image:url(pages/3_.jpg)"></div>
-			<div style="background-image:url(pages/4.gif)"></div>
-			<div style="background-image:url(pages/5.gif)"></div>
-			<div style="background-image:url(pages/6.gif)"></div>
-			<div style="background-image:url(pages/7.gif)"></div>
-			<div style="background-image:url(pages/8.jpg)"></div>
-			<div style="background-image:url(pages/9.gif)"></div>
-			<div style="background-image:url(pages/10.gif)"></div>
-			<div style="background-image:url(pages/11.gif)"></div>
-			<div style="background-image:url(pages/12.jpg)"></div>
-			<div style="background-image:url(pages/13.jpg)"></div>
-		</div>
-	</div>
-</div>
+      // Create the flipbook
 
+      $('.flipbook').turn({
+        width: 920,
+        height: 460,
+        // Duration in millisecond
+        duration: 1000,
+        elevation: 50,
+        gradients: true,
+        autoCenter: true
+      });
+    }
 
-<script type="text/javascript">
+    // Load the HTML4 version if there's not CSS transform
 
-function loadApp() {
+    yepnope({
+      test : Modernizr.csstransforms,
+      yep: ['lib/turn.js'],
+      nope: ['lib/turn.html4.min.js'],
+      both: ['css/basic.css'],
+      complete: loadApp
+    });
+  </script>
 
-	// Create the flipbook
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-	$('.flipbook').turn({
-			// Width
-
-			width: 920,
-			
-			// Height
-
-			height: 460,
-
-			// Duration in millisecond
-
-			duration: 1000,
-
-			// Elevation
-
-			elevation: 50,
-			
-			// Enable gradients
-
-			gradients: true,
-			
-			// Auto center this flipbook
-
-			autoCenter: true
-
-	});
-}
-
-// Load the HTML4 version if there's not CSS transform
-
-yepnope({
-	test : Modernizr.csstransforms,
-	yep: ['lib/turn.js'],
-	nope: ['lib/turn.html4.min.js'],
-	both: ['css/basic.css'],
-	complete: loadApp
-});
-
-</script>
-
+    ym(55540834, "init", {
+      clickmap:true,
+      trackLinks:true,
+      accurateTrackBounce:true
+    });
+  </script>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/55540834" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
 </body>
 </html>
