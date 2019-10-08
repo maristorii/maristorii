@@ -1,0 +1,36 @@
+.Links {
+  position: relative;
+  width:920px;
+	left:-460px;
+  top:-205px;
+  text-align: center;
+}
+.Links-Item {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  opacity: 0.5;
+  transition: transform 0.25s;
+  margin-left: 20px;
+}
+.Links-Item:hover {
+  opacity: 1;
+  transform: translateY(-3px);
+}
+.Links-Item:active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 0.02s;
+}
+.Links-Item:active:focus {
+  outline: none;
+}
+.Links-Item_type_inst {
+  background: url(../img/inst.png) center center no-repeat;
+}
+.Links-Item_type_fb {
+  background: url(../img/fb.png) center center no-repeat;
+}
+.Links-Item_type_mail {
+  background: url(../img/mail.png) center center no-repeat;
+}
