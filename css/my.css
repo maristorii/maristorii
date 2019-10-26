@@ -1,36 +1,61 @@
-.Links {
-  position: relative;
-  width:920px;
-	left:-460px;
-  top:-205px;
-  text-align: center;
+html {
+  height: 100%;
 }
-.Links-Item {
+
+.body {
+  --links-size: 60px;
+  --body-margin: 8px;
+  --links-margin: 8px;
+  --links-self-margin: 60px;
+  overflow: hidden;
+  margin: 0;
+  height: 100%;
+  display: flex;
+}
+.content {
+  width: calc(100% - var(--body-margin) * 2);
+  max-width: calc((100vh - var(--body-margin) * 2 - var(--links-size) - var(--links-margin)) * 2);
+  margin: auto auto;
+}
+.content__links {
+  margin: var(--links-margin) auto 0;
+  width: 100%;
+  max-width: calc((var(--links-size) + var(--links-self-margin)) * 3 - var(--links-self-margin));
+}
+
+.links {
+  display: flex;
+  justify-content: space-between;
+}
+.links__item {
   display: inline-block;
-  width: 60px;
-  height: 60px;
+  flex-shrink: 0;
+  width: var(--links-size);
+  height: var(--links-size);
   opacity: 0.5;
   transition: transform 0.25s;
-  margin-left: 20px;
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
-.Links-Item:hover {
+.links__item:hover,
+.links__item:active,
+.links__item:focus {
+  outline: none;
   opacity: 1;
   transform: translateY(-3px);
 }
-.Links-Item:active {
+.links__item:active {
   opacity: 1;
   transform: translateY(0);
   transition: transform 0.02s;
 }
-.Links-Item:active:focus {
-  outline: none;
+.links__item_type_inst {
+  background-image: url(../img/insta.png);
 }
-.Links-Item_type_inst {
-  background: url(../img/inst.png) center center no-repeat;
+.links__item_type_fb {
+  background-image: url(../img/fb.png);
 }
-.Links-Item_type_fb {
-  background: url(../img/fb.png) center center no-repeat;
-}
-.Links-Item_type_mail {
-  background: url(../img/mail.png) center center no-repeat;
+.links__item_type_mail {
+  background-image: url(../img/mail.png);
 }
