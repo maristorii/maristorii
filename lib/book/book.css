@@ -1,0 +1,55 @@
+.book {
+  --page-aspect-ratio: 1;
+  --active-page-position: 1;
+  --transform-perspective: 900px;
+  position: relative;
+}
+.book::before {
+  content: '';
+  display: block;
+  width: 100%;
+  padding-bottom: calc(50% / var(--page-aspect-ratio));
+}
+.book__page {
+  position: absolute;
+  top: 0;
+  display: none;
+  z-index: 1;
+  width: 50%;
+  height: 100%;
+
+  background-color: white;
+}
+.book__page_previous,
+.book__page_next {
+  display: block;
+  opacity: 0;
+}
+.book__page_current,
+.book__page_future {
+  display: block;
+  opacity: 1;
+  z-index: 2;
+}
+.book__page_active {
+  z-index: 3;
+}
+
+.book_active-side_left .book__page_first-active,
+.book_active-side_right .book__page_second-active {
+  opacity: 0;
+}
+.book__page:nth-child(odd) {
+  right: 0;
+  transform-origin: left;
+}
+.book__page:nth-child(even) {
+  left: 0;
+  transform-origin: right;
+}
+.book__page_active:nth-child(odd) {
+  transform: perspective(var(--transform-perspective)) rotateY(calc(-90deg + var(--active-page-position) * 90deg));
+}
+.book__page_active:nth-child(even) {
+  transform: perspective(var(--transform-perspective)) rotateY(calc(90deg + var(--active-page-position) * 90deg));
+}

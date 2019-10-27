@@ -1,72 +1,15 @@
 <!doctype html>
-<!--[if lt IE 7 ]> <html lang="en" class="ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<!--[if lt IE 7 ]> <html lang="ru" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="ru" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="ru" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="ru" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="ru"> <!--<![endif]-->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/my.css">
+  <link rel="stylesheet" href="lib/book/book.css">
   <style>
-    .book {
-      --page-aspect-ratio: 1;
-      --active-page-position: 1;
-      --transform-perspective: 900px;
-      position: relative;
-    }
-    .book::before {
-      content: '';
-      display: block;
-      width: 100%;
-      padding-bottom: calc(50% / var(--page-aspect-ratio));
-    }
-    .book__page {
-      position: absolute;
-      top: 0;
-      display: none;
-      z-index: 1;
-      width: 50%;
-      height: 100%;
-
-      background-color: white;
-    }
-    .book__page_previous,
-    .book__page_next {
-      display: block;
-      opacity: 0;
-    }
-    .book__page_current,
-    .book__page_future {
-      display: block;
-      opacity: 1;
-      z-index: 2;
-    }
-    .book__page_active {
-      z-index: 3;
-    }
-
-    .book_active-side_left .book__page_first-active,
-    .book_active-side_right .book__page_second-active {
-      opacity: 0;
-    }
-    .book__page:nth-child(odd) {
-      right: 0;
-      transform-origin: left;
-    }
-    .book__page:nth-child(even) {
-      left: 0;
-      transform-origin: right;
-    }
-    .book__page_active:nth-child(odd) {
-      transform: perspective(var(--transform-perspective)) rotateY(calc(-90deg + var(--active-page-position) * 90deg));
-    }
-    .book__page_active:nth-child(even) {
-      transform: perspective(var(--transform-perspective)) rotateY(calc(90deg + var(--active-page-position) * 90deg));
-    }
-
-
-
     .book {
       width: 100%;
     }
@@ -94,229 +37,37 @@
     .book__page:last-child {
       border-right: 1px solid #ddd;
     }
-  </style>
-  <script defer>
-    'use strict';
 
-    window.onload = () => {
-      const FINISHING_STEP = 0.1;
-      const FINISHING_DELAY = 16;
-
-      const bookElem = document.getElementById('book');
-      const pages = bookElem.querySelectorAll('.book__page');
-
-      let currentPage;
-      let activePage;
-      let futurePage;
-      let mouseStart = null;
-      let activePagePosition;
-      let finishingDirection = 0;
-      let finishingTicker;
-      let activeSide = null;
-
-      const setActiveSide = (position) => {
-        let newSide;
-        if (position === null) {
-          newSide = null;
-        } else {
-          newSide = position > 0 ? 'right' : 'left';
-        }
-
-        if (newSide === activeSide) {
-          return;
-        }
-
-        if (activeSide === 'left') {
-          bookElem.classList.remove('book_active-side_left');
-        }
-
-        if (activeSide === 'right') {
-          bookElem.classList.remove('book_active-side_right');
-        }
-
-        if (newSide) {
-          bookElem.classList.add(`book_active-side_${newSide}`);
-        }
-
-        activeSide = newSide;
-      }
-
-      const setCurrentPage = (newCurrentPage) => {
-        pages[currentPage - 2] && pages[currentPage - 2].classList.remove('book__page_previous', 'book__page_first-previous');
-        pages[currentPage - 1] && pages[currentPage - 1].classList.remove('book__page_previous', 'book__page_second-previous');
-        pages[currentPage] && pages[currentPage].classList.remove('book__page_current');
-        pages[currentPage + 1] && pages[currentPage + 1].classList.remove('book__page_current');
-        pages[currentPage + 2] && pages[currentPage + 2].classList.remove('book__page_next', 'book__page_first-next');
-        pages[currentPage + 3] && pages[currentPage + 3].classList.remove('book__page_next', 'book__page_second-next');
-
-        currentPage = newCurrentPage;
-
-        pages[currentPage - 2] && pages[currentPage - 2].classList.add('book__page_previous', 'book__page_first-previous');
-        pages[currentPage - 1] && pages[currentPage - 1].classList.add('book__page_previous', 'book__page_second-previous');
-        pages[currentPage] && pages[currentPage].classList.add('book__page_current');
-        pages[currentPage + 1] && pages[currentPage + 1].classList.add('book__page_current');
-        pages[currentPage + 2] && pages[currentPage + 2].classList.add('book__page_next', 'book__page_first-next');
-        pages[currentPage + 3] && pages[currentPage + 3].classList.add('book__page_next', 'book__page_second-next');
-      }
-
-      const setActivePage = (newActivePage) => {
-        pages[activePage] && pages[activePage].classList.remove('book__page_active', 'book__page_first-active');
-        pages[activePage + 1] && pages[activePage + 1].classList.remove('book__page_active', 'book__page_second-active');
-
-        activePage = newActivePage;
-        if (activePage === null) {
-          setActiveSide(null);
-          return;
-        }
-
-        pages[activePage] && pages[activePage].classList.add('book__page_active', 'book__page_first-active');
-        pages[activePage + 1] && pages[activePage + 1].classList.add('book__page_active', 'book__page_second-active');
-      }
-
-      const setFuturePage = (newFuturePage) => {
-        pages[futurePage] && pages[futurePage].classList.remove('book__page_future');
-        pages[futurePage + 1] && pages[futurePage + 1].classList.remove('book__page_future');
-
-        futurePage = newFuturePage;
-        if (futurePage === null) {
-          return;
-        }
-
-        pages[futurePage] && pages[futurePage].classList.add('book__page_future');
-        pages[futurePage + 1] && pages[futurePage + 1].classList.add('book__page_future');
-      }
-
-      const setActivePagePosition = (position) => {
-        activePagePosition = Math.min(1, Math.max(-1, position));
-        bookElem.style.setProperty('--active-page-position', activePagePosition);
-        setActiveSide(position);
-      }
-
-      setCurrentPage(-1);
-      //setActivePage(0);
-      //setFuturePage(1);
-      //setActivePagePosition(0.5);
-
-      const stopFinishing = () => {
-        if (!finishingTicker) {
-          return;
-        }
-        clearInterval(finishingTicker);
-        finishingTicker = null;
-      };
-
-      const finishing = () => {
-        if (activePagePosition === 1) {
-          stopFinishing();
-          setCurrentPage(activePage - 1);
-          setActivePage(null);
-          setFuturePage(null);
-        } else if (activePagePosition === -1) {
-          stopFinishing();
-          setCurrentPage(activePage + 1);
-          setActivePage(null);
-          setFuturePage(null);
-        }
-
-        setActivePagePosition(activePagePosition + finishingDirection * FINISHING_STEP);
-      };
-
-      const startFinishing = (direction) => {
-        stopFinishing();
-
-        if (direction !== undefined) {
-          finishingDirection = direction;
-        } else {
-          finishingDirection = Math.sign(activePagePosition) || -1;
-        }
-        finishingTicker = setInterval(finishing, FINISHING_DELAY);
-      };
-
-      const getPosX = (e) => {
-        let clientX;
-        if (['touchstart', 'touchmove'].includes(e.type)) {
-          clientX = e.touches[0].clientX;
-        } else {
-          clientX = e.clientX;
-        }
-
-        const x = clientX - bookElem.offsetLeft + window.scrollX - bookElem.offsetWidth / 2;
-        return x / bookElem.offsetWidth * 2;
-      };
-
-      const dragStart = (e) => {
-        e.preventDefault();
-
-        if (mouseStart !== null) {
-          return;
-        }
-
-        const posX = getPosX(e);
-
-        if (Math.abs(posX) < 0.25) {
-          return;
-        }
-
-        if (posX > 0) {
-          if (currentPage + 2 >= pages.length) {
-            return;
-          }
-
-          setActivePage(currentPage + 1);
-          setActivePagePosition(1);
-          setFuturePage(currentPage + 2);
-        } else {
-          if (currentPage === -1) {
-            return;
-          }
-
-          setActivePage(currentPage - 1);
-          setActivePagePosition(-1);
-          setFuturePage(currentPage - 2);
-        }
-        mouseStart = posX;
-      };
-
-      const drag = (e) => {
-        if (mouseStart === null) {
-          return;
-        }
-
-        e.preventDefault();
-        setActivePagePosition(getPosX(e) / Math.abs(mouseStart));
-      };
-
-      const dragEnd = (e) => {
-        if (mouseStart === null) {
-          return;
-        }
-
-        e.preventDefault();
-        mouseStart = null;
-        startFinishing();
-      };
-
-      bookElem.addEventListener('pointerdown', dragStart);
-      bookElem.addEventListener('touchstart', dragStart);
-      bookElem.addEventListener('mousedown', dragStart);
-
-      window.addEventListener('pointermove', drag);
-      window.addEventListener('touchmove', drag);
-      window.addEventListener('mousemove', drag);
-
-      window.addEventListener('pointerup', dragEnd);
-      window.addEventListener('pointercancel', dragEnd);
-      window.addEventListener('touchend', dragEnd);
-      window.addEventListener('touchcancel', dragEnd);
-      window.addEventListener('mouseup', dragEnd);
+    .content {
+      position: relative;
     }
+    .content__hint {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+    }
+    .content__hint-video {
+      width: 100%;
+    }
+  </style>
+  <script type="text/javascript" src="lib/book/book.js"></script>
+  <script defer>
+    window.onload = () => {
+      new Book(document.getElementById('book'));
+    };
   </script>
 </head>
 <body class="body">
   <div class="content">
+    <div class="content__hint">
+      <video class="content__hint-video" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+        <source src="pages/hint.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+      </video>
+    </div>
     <div class="book content__book" id="book">
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted">
+        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
           <source src="pages/1.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
@@ -327,17 +78,17 @@
         <img class="book__img"src="pages/3.jpg" />
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted">
+        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
           <source src="pages/4.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted">
+        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
           <source src="pages/5.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted">
+        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
           <source src="pages/6.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
@@ -348,17 +99,17 @@
         <img class="book__img"src="pages/8.jpg" />
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted">
+        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
           <source src="pages/9.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted">
+        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
           <source src="pages/10.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted">
+        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
           <source src="pages/11.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
