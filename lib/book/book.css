@@ -21,14 +21,15 @@
 
   background-color: white;
 }
+.book__page_visible {
+  display: block;
+}
 .book__page_previous,
 .book__page_next {
-  display: block;
   opacity: 0;
 }
 .book__page_current,
 .book__page_future {
-  display: block;
   opacity: 1;
   z-index: 2;
 }
