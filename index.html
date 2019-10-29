@@ -50,8 +50,29 @@
   <script type="text/javascript" src="lib/book/book.js"></script>
   <script defer>
     window.onload = () => {
-      new Book(document.getElementById('book'));
+      new Book(document.getElementById('book'), onPageVisible);
     };
+
+    const onceOpenedPages = [];
+
+    function onPageVisible(page, index) {
+      if (onceOpenedPages[index]) {
+        return;
+      }
+
+      onceOpenedPages[index] = true;
+
+      const videos = page.getElementsByTagName('video');
+      if (videos.length) {
+        videos[0].removeAttribute('preload')
+        videos[0].setAttribute('autoplay', 'autoplay');
+      }
+
+      const images = page.getElementsByTagName('img');
+      if (images.length) {
+        images[0].setAttribute('src', images[0].dataset.src);
+      }
+    }
   </script>
 </head>
 <body class="body">
@@ -63,57 +84,57 @@
     </div>
     <div class="book content__book" id="book">
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
           <source src="pages/1.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <img class="book__img"src="pages/2.jpg" />
+        <img class="book__img" src="" data-src="pages/2.jpg" />
       </div>
       <div class="book__page">
-        <img class="book__img"src="pages/3.jpg" />
+        <img class="book__img" src="" data-src="pages/3.jpg" />
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
           <source src="pages/4.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
           <source src="pages/5.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
           <source src="pages/6.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <img class="book__img"src="pages/7.jpg" />
+        <img class="book__img" src="" data-src="pages/7.jpg" />
       </div>
       <div class="book__page">
-        <img class="book__img"src="pages/8.jpg" />
+        <img class="book__img" src="" data-src="pages/8.jpg" />
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
           <source src="pages/9.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
           <source src="pages/10.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
           <source src="pages/11.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <img class="book__img"src="pages/12.jpg" />
+        <img class="book__img" src="" data-src="pages/12.jpg" />
       </div>
       <div class="book__page">
-        <img class="book__img"src="pages/13.jpg" />
+        <img class="book__img" src="" data-src="pages/13.jpg" />
       </div>
     </div>
     <div class="links content__links">
