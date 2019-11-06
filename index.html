@@ -66,6 +66,7 @@
       if (videos.length) {
         videos[0].removeAttribute('preload')
         videos[0].setAttribute('autoplay', 'autoplay');
+        videos[0].load();
       }
 
       const images = page.getElementsByTagName('img');
