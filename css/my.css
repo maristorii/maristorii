@@ -20,12 +20,11 @@ html {
 .content__links {
   margin: var(--links-margin) auto 0;
   width: 100%;
-  max-width: calc((var(--links-size) + var(--links-self-margin)) * 3 - var(--links-self-margin));
 }
 
 .links {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 .links__item {
   display: inline-block;
@@ -58,4 +57,8 @@ html {
 }
 .links__item_type_mail {
   background-image: url(../img/mail.png);
+}
+.links__item_type_insta-only {
+  background-image: url(../img/insta_only.jpg);
+  width: calc(var(--links-size) * 701 / 150);
 }
