@@ -1,25 +1,48 @@
 .book {
+  display: block;
+  position: relative;
   --page-aspect-ratio: 1;
   --active-page-position: 1;
   --transform-perspective: 900px;
-  position: relative;
+  --border: none;
+  --border-radius: 0;
 }
 .book::before {
   content: '';
   display: block;
-  width: 100%;
+  width: 0;
   padding-bottom: calc(50% / var(--page-aspect-ratio));
+  margin: 0 auto;
+  box-sizing: content-box;
+  border: var(--border);
 }
 .book__page {
+  display: none;
   position: absolute;
   top: 0;
-  display: none;
+  bottom: 0;
+  box-sizing: content-box;
   z-index: 1;
   width: 50%;
-  height: 100%;
   pointer-events: none;
 
   background-color: white;
+
+  border: var(--border);
+  overflow: hidden;
+  --b-radius-h: var(--border-radius);
+  --b-radius-v: calc(var(--b-radius-h) * var(--page-aspect-ratio));
+  border-radius: var(--b-radius-h)/var(--b-radius-v);
+}
+.book__page:nth-child(odd) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+}
+.book__page:nth-child(even) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
 }
 .book__page_visible {
   display: block;
@@ -42,11 +65,11 @@
   opacity: 0;
 }
 .book__page:nth-child(odd) {
-  right: 0;
+  left: 50%;
   transform-origin: left;
 }
 .book__page:nth-child(even) {
-  left: 0;
+  right: 50%;
   transform-origin: right;
 }
 .book__page_active:nth-child(odd) {

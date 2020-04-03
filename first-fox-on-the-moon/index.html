@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <title>Первый лис на луне</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../lib/book/book.css">
+  <script type="text/javascript" src="../lib/book/book.js"></script>
+  <link rel="stylesheet" href="../css/my.css">
+
+  <style>
+    .book {
+      --page-aspect-ratio: calc(1504/1622);
+      --border: 10px solid #ddd;
+      --border-radius: 12%;
+    }
+    .book__img {
+      width: 100%;
+    }
+    .book__page {
+      line-height: 0;
+    }
+
+    .content {
+      position: relative;
+    }
+    .content__book {
+      width: 100%;
+    }
+    .content__hint {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+    }
+    .content__hint-video {
+      width: 100%;
+    }
+  </style>
+  <script defer>
+    window.onload = () => {
+      new Book(document.getElementById('book'), onPageVisible);
+    };
+
+    const onceOpenedPages = [];
+
+    function onPageVisible(page, index) {
+      if (onceOpenedPages[index]) {
+        return;
+      }
+
+      onceOpenedPages[index] = true;
+
+      const videos = page.getElementsByTagName('video');
+      if (videos.length) {
+        videos[0].removeAttribute('preload')
+        videos[0].setAttribute('autoplay', 'autoplay');
+        videos[0].load();
+      }
+
+      const images = page.getElementsByTagName('img');
+      if (images.length) {
+        images[0].setAttribute('src', images[0].dataset.src);
+      }
+    }
+  </script>
+</head>
+<body class="body">
+  <div class="content">
+    <div class="content__hint">
+      <video class="content__hint-video" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+        <source src="pages/hint.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+      </video>
+    </div>
+    <div class="book content__book" id="book">
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/cover-front.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+          sdsdsgdvs
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/want-to-the-moon-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/want-to-the-moon-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/need-home-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/need-home-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/want-to-film-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/want-to-film-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/everything-is-project-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/everything-is-project-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/target-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/target-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/project-or-not-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/project-or-not-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/deadline-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/deadline-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/list-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/list-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/plan-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/plan-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/right-order-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/right-order-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/manage-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/manage-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/writing-report-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/writing-report-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/report-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/report-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+          <source src="pages/cover-front.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+    </div>
+    <div class="links content__links">
+      <a
+        href="https://www.instagram.com/maristorii/"
+        target="_blank"
+        class="links__item links__item_type_insta-only"
+        title="Instagram: maristorii"
+      ></a>
+    </div>
+  </div>
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(55540834, "init", {
+      clickmap:true,
+      trackLinks:true,
+      accurateTrackBounce:true
+    });
+  </script>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/55540834" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
+</body>
+</html>
