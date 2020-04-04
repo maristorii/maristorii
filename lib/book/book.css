@@ -6,6 +6,11 @@
   --transform-perspective: 900px;
   --border: none;
   --border-radius: 0;
+  box-sizing: border-box;
+  border: var(--border);
+  border-color: transparent;
+  border-top: none;
+  border-bottom: none;
 }
 .book::before {
   content: '';

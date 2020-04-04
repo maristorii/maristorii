@@ -38,26 +38,29 @@
   <script type="text/javascript" src="lib/book/book.js"></script>
   <script defer>
     window.onload = () => {
-      new Book(document.getElementById('book'), onPageVisible);
+      new Book({
+        bookDomElement: document.getElementById('book'),
+        onPageVisibilityChange,
+      });
     };
 
     const onceOpenedPages = [];
 
-    function onPageVisible(page, index) {
-      if (onceOpenedPages[index]) {
+    function onPageVisibilityChange({ pageDomElement, index, visible }) {
+      if (!visible || onceOpenedPages[index]) {
         return;
       }
 
       onceOpenedPages[index] = true;
 
-      const videos = page.getElementsByTagName('video');
+      const videos = pageDomElement.getElementsByTagName('video');
       if (videos.length) {
         videos[0].removeAttribute('preload')
         videos[0].setAttribute('autoplay', 'autoplay');
         videos[0].load();
       }
 
-      const images = page.getElementsByTagName('img');
+      const images = pageDomElement.getElementsByTagName('img');
       if (images.length) {
         images[0].setAttribute('src', images[0].dataset.src);
       }

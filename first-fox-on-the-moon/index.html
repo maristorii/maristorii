@@ -12,8 +12,8 @@
   <style>
     .book {
       --page-aspect-ratio: calc(1504/1622);
-      --border: 10px solid #ddd;
-      --border-radius: 12%;
+      --border: 2px solid #ddd;
+      --border-radius: 4%;
     }
     .book__img {
       width: 100%;
@@ -39,31 +39,147 @@
     }
   </style>
   <script defer>
-    window.onload = () => {
-      new Book(document.getElementById('book'), onPageVisible);
-    };
+    let pages;
+    let book;
 
-    const onceOpenedPages = [];
-
-    function onPageVisible(page, index) {
-      if (onceOpenedPages[index]) {
+    const onPageVisibilityChange = ({ index, visible }) => {
+      if (!visible) {
         return;
       }
 
-      onceOpenedPages[index] = true;
+      const page = pages[index];
 
-      const videos = page.getElementsByTagName('video');
-      if (videos.length) {
-        videos[0].removeAttribute('preload')
-        videos[0].setAttribute('autoplay', 'autoplay');
-        videos[0].load();
+      if (page.onceOpened) {
+        return;
       }
 
-      const images = page.getElementsByTagName('img');
-      if (images.length) {
-        images[0].setAttribute('src', images[0].dataset.src);
+      page.onceOpened = true;
+
+      if (page.video) {
+        page.video.removeAttribute('preload');
+        page.video.load();
       }
-    }
+
+      if (page.image) {
+        page.image.setAttribute('src', image.dataset.src);
+      }
+    };
+
+    const tryToPlay = () => {
+      if (!book) {
+        return;
+      }
+
+      const currentPage = book.getCurrentPage();
+
+      book.getVisiblePages().forEach(pageIndex => {
+        const page = pages[pageIndex];
+        if (!page.video || page.isDependant || !page.video.readyState === 4 || page.played) {
+          return;
+        }
+
+        const isCurrent = pageIndex === currentPage || pageIndex === (currentPage + 1);
+
+        if (!page.dependantVideo) {
+          if (page.video.loop || isCurrent) {
+            page.video.play();
+            page.played = true;
+          }
+
+          return;
+        }
+
+        if (!page.dependantVideo.readyState === 4) {
+          return;
+        }
+
+        if (page.video.loop || isCurrent) {
+          page.video.play();
+          page.dependantVideo.play();
+          page.played = true;
+        }
+      });
+    };
+
+    const syncDependencies = () => {
+      book.getVisiblePages().forEach(pageIndex => {
+        const page = pages[pageIndex];
+        if (!page.video || !page.dependantVideo || !page.played) {
+          return;
+        }
+
+        if (Math.abs(page.video.currentTime - page.dependantVideo.currentTime) < 0.05) {
+          return;
+        }
+
+        page.dependantVideo.currentTime = page.video.currentTime;
+        page.video.currentTime = page.dependantVideo.currentTime;
+      });
+    };
+
+    const onVideoReady = event => {
+      tryToPlay();
+    };
+
+    const onCurrentPageChange = ({ currentPage, previousPage }) => {
+      tryToPlay();
+      [previousPage, previousPage + 1].forEach(pageIndex => {
+        const page = pages[pageIndex];
+
+        if (!page || !page.video || page.isDependant || !page.video.readyState === 4) {
+          return;
+        }
+
+        page.video.pause();
+        page.video.currentTime = 0;
+        page.played = false;
+
+        if (!page.dependantVideo || !page.dependantVideo.readyState === 4) {
+          return;
+        }
+
+        page.dependantVideo.pause();
+        page.dependantVideo.currentTime = 0;
+      });
+    };
+
+    window.onload = () => {
+      const bookDomElement = document.getElementById('book');
+
+      pages = Array.from(bookDomElement.getElementsByClassName('book__page'))
+        .map((page, pageIndex) => ({
+          video: page.getElementsByTagName('video')[0],
+          image: page.getElementsByTagName('img')[0],
+          onceOpened: false,
+          pageIndex,
+          played: false,
+        }))
+      ;
+
+      pages.forEach(({ video, pageIndex }) => {
+        if (!video) {
+          return;
+        }
+
+        if (video.dataset.dependant) {
+          pages[pageIndex].isDependant = true;
+        }
+
+        if (video.dataset.leadof) {
+          pages[pageIndex].dependantVideo = document.getElementById(video.dataset.leadof);
+        }
+
+        video.addEventListener('canplaythrough', onVideoReady);
+      });
+
+      book = new Book({
+        bookDomElement,
+        onPageVisibilityChange,
+        onCurrentPageChange,
+      });
+
+      setInterval(syncDependencies, 500)
+    };
   </script>
 </head>
 <body class="body">
@@ -77,7 +193,6 @@
       <div class="book__page">
         <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
           <source src="pages/cover-front.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-          sdsdsgdvs
         </video>
       </div>
       <div class="book__page">
@@ -91,22 +206,22 @@
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-leadof="need-home-r">
           <source src="pages/need-home-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="need-home-r">
           <source src="pages/need-home-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-leadof="want-to-film-r">
           <source src="pages/want-to-film-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="want-to-film-r">
           <source src="pages/want-to-film-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
@@ -121,12 +236,12 @@
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-leadof="target-r">
           <source src="pages/target-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="target-r" >
           <source src="pages/target-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
@@ -141,32 +256,32 @@
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-leadof="deadline-r">
           <source src="pages/deadline-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="deadline-r">
           <source src="pages/deadline-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" muted="muted" playsinline="playsinline" preload="none" data-leadof="list-r">
           <source src="pages/list-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="list-r">
           <source src="pages/list-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-leadof="plan-r">
           <source src="pages/plan-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="plan-r">
           <source src="pages/plan-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
