@@ -1,12 +1,14 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <title>Первый лис на луне</title>
   <meta charset="utf-8" />
+  <title>Первый лис на луне</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="../lib/book/book.css">
-  <script type="text/javascript" src="../lib/book/book.js"></script>
+  <script type="text/javascript" src="../lib/book/Book.js"></script>
+  <link rel="stylesheet" href="control/control.css">
+  <script type="text/javascript" src="control/Control.js"></script>
   <link rel="stylesheet" href="../css/my.css">
 
   <style>
@@ -41,27 +43,28 @@
   <script defer>
     let pages;
     let book;
+    let control;
 
-    const onPageVisibilityChange = ({ index, visible }) => {
+    const onPageVisibilityChange = ({ detail: { index, visible } }) => {
       if (!visible) {
         return;
       }
 
-      const page = pages[index];
+      const { onceOpened, video, image } = pages[index];
 
-      if (page.onceOpened) {
+      if (onceOpened) {
         return;
       }
 
-      page.onceOpened = true;
+      pages[index].onceOpened = true;
 
-      if (page.video) {
-        page.video.removeAttribute('preload');
-        page.video.load();
+      if (video) {
+        video.removeAttribute('preload');
+        video.load();
       }
 
-      if (page.image) {
-        page.image.setAttribute('src', image.dataset.src);
+      if (image) {
+        image.setAttribute('src', image.dataset.src);
       }
     };
 
@@ -70,9 +73,10 @@
         return;
       }
 
-      const currentPage = book.getCurrentPage();
+      const currentPage = book.currentPage;
+      const visiblePages = book.visiblePages;
 
-      book.getVisiblePages().forEach(pageIndex => {
+      visiblePages.forEach(pageIndex => {
         const page = pages[pageIndex];
         if (!page.video || page.isDependant || !page.video.readyState === 4 || page.played) {
           return;
@@ -81,7 +85,7 @@
         const isCurrent = pageIndex === currentPage || pageIndex === (currentPage + 1);
 
         if (!page.dependantVideo) {
-          if (page.video.loop || isCurrent) {
+          if (isCurrent || (page.video.loop && book.isPageTurning)) {
             page.video.play();
             page.played = true;
           }
@@ -93,7 +97,7 @@
           return;
         }
 
-        if (page.video.loop || isCurrent) {
+        if (isCurrent || (page.video.loop && book.isPageTurning)) {
           page.video.play();
           page.dependantVideo.play();
           page.played = true;
@@ -102,7 +106,7 @@
     };
 
     const syncDependencies = () => {
-      book.getVisiblePages().forEach(pageIndex => {
+      book.visiblePages.forEach(pageIndex => {
         const page = pages[pageIndex];
         if (!page.video || !page.dependantVideo || !page.played) {
           return;
@@ -121,7 +125,11 @@
       tryToPlay();
     };
 
-    const onCurrentPageChange = ({ currentPage, previousPage }) => {
+    const onCurrentPageChange = ({ detail: { currentPage, previousPage } }) => {
+      if (currentPage === previousPage) {
+        return;
+      }
+
       tryToPlay();
       [previousPage, previousPage + 1].forEach(pageIndex => {
         const page = pages[pageIndex];
@@ -156,10 +164,13 @@
         }))
       ;
 
+      let controlPageIndex;
       pages.forEach(({ video, pageIndex }) => {
         if (!video) {
           return;
         }
+
+        video.$pageIndex = pageIndex;
 
         if (video.dataset.dependant) {
           pages[pageIndex].isDependant = true;
@@ -169,16 +180,25 @@
           pages[pageIndex].dependantVideo = document.getElementById(video.dataset.leadof);
         }
 
+        if (video.id === 'control-video') {
+          controlPageIndex = pageIndex;
+        }
+
         video.addEventListener('canplaythrough', onVideoReady);
       });
 
-      book = new Book({
-        bookDomElement,
-        onPageVisibilityChange,
-        onCurrentPageChange,
+      bookDomElement.addEventListener('pageVisibilityChange', onPageVisibilityChange);
+      bookDomElement.addEventListener('currentPageChange', onCurrentPageChange);
+      book = new Book(bookDomElement);
+
+      control = new Control({
+        page: document.getElementById('control'),
+        video: document.getElementById('control-video'),
+        book,
+        pageIndex: controlPageIndex,
       });
 
-      setInterval(syncDependencies, 500)
+      setInterval(syncDependencies, 500);
     };
   </script>
 </head>
@@ -241,7 +261,7 @@
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="target-r" >
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="target-r">
           <source src="pages/target-r.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
       </div>
@@ -306,6 +326,17 @@
         </video>
       </div>
       <div class="book__page">
+        <video class="book__img" muted="muted" playsinline="playsinline" preload="none" id="control-video" data-dependant="true">
+          <source src="pages/control-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video>
+      </div>
+      <div class="book__page control" id="control">
+        <img data-src="pages/control-r.png" class="book__img control__back" />
+        <div class="control__arrow"></div>
+        <div class="control__message"></div>
+        <button class="control__button"></button>
+      </div>
+      <div class="book__page">
         <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
           <source src="pages/writing-report-l.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
         </video>
@@ -326,9 +357,7 @@
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
-          <source src="pages/cover-front.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-        </video>
+        <img data-src="pages/cover-back.png" class="book__img" />
       </div>
     </div>
     <div class="links content__links">

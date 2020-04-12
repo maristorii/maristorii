@@ -35,18 +35,17 @@
       background-color: white;
     }
   </style>
-  <script type="text/javascript" src="lib/book/book.js"></script>
+  <script type="text/javascript" src="lib/book/Book.js"></script>
   <script defer>
     window.onload = () => {
-      new Book({
-        bookDomElement: document.getElementById('book'),
-        onPageVisibilityChange,
-      });
+      const bookDomElement = document.getElementById('book');
+      bookDomElement.addEventListener('pageVisibilityChange', onPageVisibilityChange);
+      new Book(bookDomElement);
     };
 
     const onceOpenedPages = [];
 
-    function onPageVisibilityChange({ pageDomElement, index, visible }) {
+    function onPageVisibilityChange({ detail: { pageDomElement, index, visible } }) {
       if (!visible || onceOpenedPages[index]) {
         return;
       }
@@ -123,22 +122,22 @@
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-leadof="fish-r">
           <source src="pages/IMG-0402.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="fish-r">
           <source src="pages/IMG-0401.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-leadof="cat-r">
           <source src="pages/IMG-0647.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
       <div class="book__page">
-        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none">
+        <video class="book__img" loop="loop" muted="muted" playsinline="playsinline" preload="none" data-dependant="true" id="cat-r">
           <source src="pages/IMG-0648.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
         </video>
       </div>
