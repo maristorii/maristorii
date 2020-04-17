@@ -67,14 +67,13 @@ class Control {
     this._message = null;
     this._buttonPressed = false;
     this._buttonReady = false;
-    this._isOpen = false;
     this._isRewined = false;
     this._rewindTimer = null;
     this._currentConfig = null;
 
     this._onClick = this._onClick.bind(this);
     this._onCurrentPageChange = this._onCurrentPageChange.bind(this);
-    this._onVideoReady = this._onVideoReady.bind(this);
+    this._onPlay = this._onPlay.bind(this);
 
     this._button = this._page.getElementsByClassName('control__button')[0];
     this._button.addEventListener('touchstart', e => e.stopPropagation());
@@ -87,29 +86,20 @@ class Control {
     }
 
     book.bookElement.addEventListener('currentPageChange', this._onCurrentPageChange);
-    this._video.addEventListener('play', this._onVideoReady);
+    this._video.addEventListener('play', this._onPlay);
 
     this._resetAll();
   }
 
   _onCurrentPageChange({ detail: { currentPage }}) {
-    if (currentPage === this._pageIndex) {
-      this._isOpen = true;
-      this._tryToStart();
-    } else {
-      this._isOpen = false;
+    if (currentPage !== this._pageIndex) {
       this._resetAll();
     }
   }
 
-  _onVideoReady() {
-    this._tryToStart();
-  }
-
-  _tryToStart() {
-    if (this._isOpen && this._video.readyState === 4 && this._phase === this.PHASE_CLOSED) {
+  _onPlay() {
+    if (this._phase === this.PHASE_CLOSED) {
       this._setPhase(this.PHASE_ON_START);
-      this._video.play();
     }
   }
 
