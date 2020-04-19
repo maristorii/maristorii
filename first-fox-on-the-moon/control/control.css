@@ -32,8 +32,9 @@
   transform: rotate(362deg);
 }
 
-.control_phase_landing .control__arrow::before {
-  transform: rotate(400deg);
+.control_phase_landing .control__arrow::before,
+.control_phase_complete .control__arrow::before {
+    transform: rotate(400deg);
 }
 
 .control__arrow {
@@ -60,14 +61,18 @@
 }
 
 .control_message_success .control__message {
-  background-position: top 33% left 0;
+  background-position: top 25% left 0;
 }
 
 .control_message_late .control__message {
-  background-position: top 67% left 0;
+  background-position: top 50% left 0;
 }
 
 .control_message_early .control__message {
+  background-position: top 75% left 0;
+}
+
+.control_phase_complete .control__message {
   background-position: top 100% left 0;
 }
 

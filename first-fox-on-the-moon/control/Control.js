@@ -24,6 +24,7 @@ class Control {
     this.PHASE_WAY_TO_MOON = 'way-to-moon';
     this.PHASE_AROUND_MOON = 'around-moon';
     this.PHASE_LANDING = 'landing';
+    this.PHASE_COMPLETE = 'complete';
 
     this.TIME_RESERVE = 0.01;
 
@@ -60,7 +61,12 @@ class Control {
         isLateBefore: 27.5,
         nextPhase: this.PHASE_LANDING,
       },
-      [this.PHASE_LANDING]: {},
+      [this.PHASE_LANDING]: {
+        nextPhaseAfter: 31.25,
+        nextPhase: this.PHASE_COMPLETE,
+      },
+      [this.PHASE_COMPLETE]: {
+      },
     };
 
     this._phase = null;
