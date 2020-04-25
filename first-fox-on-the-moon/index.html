@@ -35,13 +35,13 @@
     }
     .content__hint {
       position: absolute;
-      top: 0;
+      top: 10%;
       left: 0;
       width: 50%;
+      clip-path: circle(40% at center);
     }
     .content__hint-video {
       width: 100%;
-      margin-top: 10%;
     }
 
     html {
@@ -96,18 +96,46 @@
       transform: translateY(0);
       transition: transform 0.02s;
     }
-    .links__item_type_inst {
-      background-image: url(../img/insta.png);
-    }
-    .links__item_type_fb {
-      background-image: url(../img/fb.png);
-    }
-    .links__item_type_mail {
-      background-image: url(../img/mail.png);
-    }
     .links__item_type_insta-only {
-      background-image: url(pages/insta.jpg);
+      background-image: url(img/insta.jpg);
       width: calc(var(--links-size) * 640 / 155);
+    }
+
+    .fullscreen-button {
+      display: none;
+      border: none;
+      background: none;
+      padding: 0;
+      -webkit-appearance: none;
+
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 50px;
+      height: 50px;
+      z-index: 100;
+
+      background-image: url(img/full_50.png);
+    }
+    .body:fullscreen .fullscreen-button,
+    .body_fullscreen .fullscreen-button {
+      background-image: url(img/unfull_50.png);
+    }
+
+    .body:fullscreen,
+    .body_fullscreen {
+      --links-size: 0;
+      --body-margin: 16px;
+      --links-margin: 0;
+      --links-self-margin: 0;
+    }
+    .body:fullscreen .links,
+    .body_fullscreen .links {
+      display: none;
+    }
+
+    .body_canBeFullscreen .fullscreen-button {
+      display: block;
     }
   </style>
   <script defer>
@@ -269,14 +297,33 @@
       });
 
       setInterval(syncDependencies, 500);
+
+      let fullscreenEnabled = false;
+      const body = document.getElementById('body');
+
+      if (body.requestFullscreen) {
+        body.classList.add('body_canBeFullscreen');
+      }
+
+      document.getElementById('fullscreenButton').addEventListener('click', () => {
+        if(fullscreenEnabled) {
+          document.exitFullscreen();
+          fullscreenEnabled = false;
+          body.classList.remove('body_fullscreen')
+        } else {
+          body.requestFullscreen();
+          fullscreenEnabled = true;
+          body.classList.add('body_fullscreen')
+        }
+      });
     };
   </script>
 </head>
-<body class="body">
-  <div class="content">
+<body class="body" id="body">
+  <div class="content" id="content">
     <div class="content__hint">
       <video class="content__hint-video" autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
-        <source src="pages/hint_640.mp4" type="video/mp4" />
+        <source src="img/hint_640.mp4" type="video/mp4" />
       </video>
     </div>
     <div class="book content__book" id="book">
@@ -455,7 +502,7 @@
       ></a>
     </div>
   </div>
-
+  <button class="fullscreen-button" id="fullscreenButton"></button>
 
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript" >
