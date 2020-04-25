@@ -15,6 +15,7 @@
       --margin: 20px;
       --action-size: 30px;
       font-size: 18px;
+      padding-bottom: 40px;
     }
     .header {
       font-family: 'Neucha', cursive;
@@ -106,6 +107,20 @@
         font-size: 12px;
       }
     }
+
+    .page__footer {
+      text-align: center;
+    }
+
+    .instalink {
+      display: block;
+      width: auto;
+      margin: var(--margin);
+    }
+    .instalink__icon {
+      width: 100%;
+      max-width: 400px;
+    }
   </style>
 </head>
 <body class="page">
@@ -138,7 +153,16 @@
       </div>
     </div>
   </main>
-
+  <footer class="page__footer">
+    <a
+      class="instalink"
+      href="https://www.instagram.com/maristorii/"
+      target="_blank"
+      title="Instagram: maristorii"
+    >
+      <img class="instalink__icon" src="img/insta_400.png">
+    </a>
+  </footer>
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript" >
     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
