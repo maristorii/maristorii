@@ -309,11 +309,11 @@
         if(fullscreenEnabled) {
           document.exitFullscreen();
           fullscreenEnabled = false;
-          body.classList.remove('body_fullscreen')
+          body.classList.remove('body_fullscreen');
         } else {
           body.requestFullscreen();
           fullscreenEnabled = true;
-          body.classList.add('body_fullscreen')
+          body.classList.add('body_fullscreen');
         }
       });
     };
