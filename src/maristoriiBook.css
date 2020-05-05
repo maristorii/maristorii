@@ -57,13 +57,13 @@ html {
 }
 
 .links {
+  width: max-content;
   display: flex;
   justify-content: space-around;
 }
 .links__item {
   display: inline-block;
   flex-shrink: 0;
-  width: var(--links-size);
   height: var(--links-size);
   opacity: 0.66;
   transition: transform 0.25s;
@@ -83,9 +83,16 @@ html {
   transform: translateY(0);
   transition: transform 0.02s;
 }
-.links__item_type_insta-only {
-  background-image: url(img/insta.jpg);
-  width: calc(var(--links-size) * 640 / 155);
+.links__item:not(:first-child) {
+  margin-left: var(--links-margin);
+}
+.links__item_type_insta {
+  background-image: url(img/insta_400.png);
+  width: calc(var(--links-size) * 400 / 97);
+}
+.links__item_type_home {
+  background-image: url(img/home_128.png);
+  width: calc(var(--links-size) * 128 / 95);
 }
 
 .fullscreen-button {
