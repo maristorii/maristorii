@@ -25,6 +25,9 @@ html {
 .links {
   display: flex;
   justify-content: space-around;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
 }
 .links__item {
   display: inline-block;
@@ -49,7 +52,7 @@ html {
   transform: translateY(0);
   transition: transform 0.02s;
 }
-.links__item_type_inst {
+.links__item_type_insta {
   background-image: url(../img/insta.png);
 }
 .links__item_type_fb {
