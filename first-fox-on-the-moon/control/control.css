@@ -54,10 +54,17 @@
   left: 51%;
   width: 32%;
   height: 4.947%;
-  background-image: url('img/message.png');
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: top 0 left 0;
+}
+
+.body_lang_ru .control__message {
+  background-image: url('img/message_text-ru.png');
+}
+
+.body_lang_tat .control__message {
+  background-image: url('img/message_text-tat.png');
 }
 
 .control_message_success .control__message {

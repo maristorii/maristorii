@@ -61,7 +61,7 @@ class Book {
     if (visible) {
       this._visiblePages.add(pageIndex);
       this._pages[pageIndex].classList.add('book__page_visible');
-    }  else {
+    } else {
       this._visiblePages.delete(pageIndex);
       this._pages[pageIndex].classList.remove('book__page_visible');
     }
