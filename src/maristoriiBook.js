@@ -1,13 +1,29 @@
 let pages;
 let book;
 let control;
+let building;
+
+//urlParams
+const getUrlParams = () => {
+  const params = Object.create(null);
+  if (window.location.search == "") return params;
+  window.location.search.substr(1).split("&").forEach(param => {
+    let p = param.split("=", 2);
+    params[p[0]] = p.length == 1? "": decodeURIComponent(p[1].replace(/\+/g, " "));
+  });
+  return params;
+};
+
+const urlParams = getUrlParams();
+
+const lang = urlParams.lang || 'ru';
 
 const onPageVisibilityChange = ({ detail: { index, visible } }) => {
   if (!visible) {
     return;
   }
 
-  const { onceOpened, video, image } = pages[index];
+  const { onceOpened, video, images } = pages[index];
 
   if (onceOpened) {
     return;
@@ -20,9 +36,7 @@ const onPageVisibilityChange = ({ detail: { index, visible } }) => {
     video.load();
   }
 
-  if (image) {
-    image.setAttribute('src', image.dataset.src);
-  }
+  images.forEach(image => image.setAttribute('src', image.dataset.src.replace('_text.', `_text-${lang}.`)));
 };
 
 const tryToPlay = () => {
@@ -112,16 +126,38 @@ window.onload = () => {
   const bookDomElement = document.getElementById('book');
 
   pages = Array.from(bookDomElement.getElementsByClassName('book__page'))
-    .map((page, pageIndex) => ({
-      video: page.getElementsByTagName('video')[0],
-      image: page.getElementsByTagName('img')[0],
-      onceOpened: false,
-      pageIndex,
-      played: false,
-    }))
+    .map((page, pageIndex) => {
+      const video = page.getElementsByTagName('video')[0];
+
+      if (video) {
+        Array.from(video.getElementsByTagName('source')).forEach(source => {
+          if (source.dataset.src) {
+            source.src = source.dataset.src.replace('_text.', `_text-${lang}.`);
+          }
+        });
+      }
+
+      return {
+        video,
+        images: Array.from(page.getElementsByTagName('img')),
+        onceOpened: false,
+        pageIndex,
+        played: false,
+      };
+    })
   ;
 
+  const langLink = document.getElementById('lang-link');
+
+  if (langLink) {
+    langLink.classList.add(`lang-link_lang_${lang}`);
+
+    langLink.href = `?lang=${lang == 'ru' ? 'tat' : 'ru'}`;
+  }
+
   let controlPageIndex;
+  let buildingPageIndex;
+
   pages.forEach(({ video, pageIndex }) => {
     if (!video) {
       return;
@@ -130,9 +166,7 @@ window.onload = () => {
     video.$pageIndex = pageIndex;
 
     const progressHandler = (e) => {
-      console.log('progress', pageIndex, e.target.duration, e.target, e.target.buffered.length && e.target.buffered.end(0));
       if (e.total && e.loaded) {
-        console.log(e.loaded / e.total);
         pages[pageIndex].page.style = `--loading-progress: ${e.loaded / e.total}`;
       }
     }
@@ -151,6 +185,10 @@ window.onload = () => {
       controlPageIndex = pageIndex;
     }
 
+    if (video.id === 'building-video') {
+      buildingPageIndex = pageIndex;
+    }
+
     video.addEventListener('canplaythrough', onVideoReady);
   });
 
@@ -165,10 +203,21 @@ window.onload = () => {
     pageIndex: controlPageIndex,
   });
 
+  // building = new Building({
+  //   domElem: document.getElementById('building'),
+  //   video: document.getElementById('building-video'),
+  //   leftPage: document.getElementById('building-leftPage'),
+  //   rightPage: document.getElementById('building-rightPage'),
+  //   book,
+  //   pageIndex: buildingPageIndex,
+  // });
+
   setInterval(syncDependencies, 500);
 
   let fullscreenEnabled = false;
   const body = document.getElementById('body');
+
+  body.classList.add(`body_lang_${lang}`);
 
   if (body.requestFullscreen) {
     body.classList.add('body_canBeFullscreen');

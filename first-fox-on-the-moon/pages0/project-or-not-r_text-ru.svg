@@ -1,0 +1,15 @@
+<svg height="690" viewBox="0 0 640 690" width="640" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text {
+      font: 21px arial;
+      fill: black;
+    }
+  </style>
+
+  <text>
+    <tspan x="20" y="570">И это правда. Но разве есть ещё такой же фильм, как у Кота?</tspan>
+    <tspan x="20" dy="25">Или домик, как у пчёл Медведя? Не-а. И вот <tspan style="font-weight: bold;">так</tspan>, как на Луну</tspan>
+    <tspan x="20" dy="25">полетит Лис, ещё никто не летал: и время другое, и условия</tspan>
+    <tspan x="20" dy="25">совсем иные. В этом и заключается уникальность проекта.</tspan>
+  </text>
+</svg>
