@@ -122,6 +122,12 @@ const onCurrentPageChange = ({ detail: { currentPage, previousPage } }) => {
   });
 };
 
+window.addEventListener('DOMContentLoaded', () => {
+  if (urlParams.hideLinks) {
+    document.getElementById('body').classList.add('body_hide-links');
+  }
+});
+
 window.onload = () => {
   const bookDomElement = document.getElementById('book');
 

@@ -56,6 +56,14 @@ html {
   width: 100%;
 }
 
+.body_hide-links {
+  --links-size: 0px;
+}
+
+.body_hide-links .content__links {
+  display: none;
+}
+
 .links {
   width: 100%;
   min-width: 300px;
