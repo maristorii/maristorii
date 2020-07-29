@@ -155,6 +155,13 @@ window.onload = () => {
     langLink.href = `?lang=${lang == 'ru' ? 'tat' : 'ru'}`;
   }
 
+  const hint = document.querySelector('.content__hint-video source');
+  if (hint) {
+    hint.src = hint.dataset.src.replace('_text.', `_text-${lang}.`);
+
+    document.querySelector('.content__hint-video').load();
+  }
+
   let controlPageIndex;
   let buildingPageIndex;
 

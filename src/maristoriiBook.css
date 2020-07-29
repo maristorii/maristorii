@@ -22,10 +22,10 @@ html {
 }
 .content__hint {
   position: absolute;
-  top: 10%;
+  top: 5%;
   left: 0;
   width: 50%;
-  clip-path: circle(40% at center);
+  clip-path: circle(45% at 48% 45%);
 }
 .content__hint-video {
   width: 100%;
