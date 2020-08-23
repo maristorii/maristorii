@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
   <style>
     .page {
-      background-color: #ded9bc;
+      background-color: white;
       margin: 0;
       padding: 0;
       --icon-size: 200px;
@@ -30,32 +30,43 @@
       font-size: 30px;
     }
     .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
       width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
+      max-width: 1920px;
+      position: relative;
+      margin: 10px auto;
+      margin-top: 80px;
+    }
+    .cards::before {
+      content: '';
+      display: block;
+      padding-top: 20%;
+    }
+    .cards::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      pointer-events: none;
+      background-image: url('img/back_desktop_2000.png');
+      background-repeat: no-repeat;
+      background-size: 72.62% auto;
+      background-position: 40% 58%;
     }
     .cards__card {
-      margin: var(--margin);
-      position: relative;
+      position: absolute;
       box-sizing: border-box;
-      width: 100%;
-      max-width: calc(var(--icon-size) + var(--margin) + var(--description-width));
-      padding-left: calc(var(--icon-size) + var(--margin));
-      min-height: var(--icon-size);
+      width: 16.68%;
       font-family: Arial, Helvetica, sans-serif;
       color: #3f2a0b;
     }
     .cards__icon {
-      position: absolute;
-      left: 0;
-      width: var(--icon-size);
-      border-radius: 4px;
+      width: 100%;
     }
     .cards__description {
       margin: 0;
+      width: 140%;
     }
     .cards__title {
       font-weight: bold;
@@ -77,6 +88,18 @@
       border-radius: 4px;
       padding: 6px 16px 1px;
     }
+    .cards__card_type_horse {
+      top: 0.5%;
+      left: 7%;
+    }
+    .cards__card_type_project {
+      top: 0;
+      left: 71.3%;
+    }
+    .cards__card_type_fox {
+      top: 9%;
+      left: 43%;
+    }
     .cards__card_type_fox .cards__link_type_action {
       background-color: #e86b21;
       --color: #fad0ac;
@@ -85,26 +108,46 @@
       background-color: #20b5b7;
       --color: #dbe1e4;
     }
-    .cards__card_type_survey .cards__link_type_action {
+    .cards__card_type_project .cards__link_type_action {
       background-color: #762c00;
       --color: #fad0ac;
     }
-    @media all and (max-width: 600px) {
-      .page {
-        --icon-size: 150px;
-        --description-width: 350px;
-        --margin: 10px;
-        --action-size: 20px;
-        font-size: 14px;
+    @media all and (max-width: 800px) {
+      .cards {
+        margin-top: 10px;
       }
-    }
-    @media all and (max-width: 400px) {
-      .page {
-        --icon-size: 100px;
-        --description-width: 350px;
-        --margin: 10px;
-        --action-size: 18px;
-        font-size: 12px;
+      .cards::before {
+        padding-top: 100%;
+      }
+      .cards::after {
+        background-image: url('img/back_mobile_1080.png');
+        background-size: 82.33% auto;
+        background-position: 50% 94%;
+      }
+      .cards__card {
+        width: 37.97%;
+      }
+      .cards__card_type_horse {
+        top: 0;
+        left: 9%;
+      }
+      .cards__card_type_project {
+        top: 37.5%;
+        left: 49%;
+      }
+      .cards__card_type_fox {
+        top: 72.5%;
+        left: 32%;
+      }
+      .cards__icon {
+        width: 100%;
+      }
+      .cards__description {
+        width: 140%;
+        display: none;
+      }
+      .cards__link_type_action {
+        display: none;
       }
     }
 
@@ -125,35 +168,31 @@
 </head>
 <body class="page">
   <main class="page__content">
-    <header class="header">
-      <h1 class="header__title">ПРИВЕТ! :)</h1>
-      <p class="header__subtitle">Меня зовут Марьям, и&nbsp;вот что у меня для вас есть:</p>
-    </header>
     <div class="cards">
-      <div class="cards__card cards__card_type_fox">
-        <a class="cards__link cards__link_type_icon" href="first-fox-on-the-moon/">
-          <img class="cards__icon" src="img/fox-cover_200.jpg">
-        </a>
-        <p class="cards__description"><span class="cards__title">«Первый лис на&nbsp;Луне»</span>&nbsp;— проектное мышление для детей: с&nbsp;главным героем Лисом мы узнаем, как важно планировать и&nbsp;делать выводы, а&nbsp;ещё, что если очень захотеть, можно в&nbsp;космос улететь&nbsp;:)</p>
-        <a class="cards__link cards__link_type_action" href="first-fox-on-the-moon/">ЧИТАТЬ!</a>
-      </div>
-      <div class="cards__card cards__card_type_survey">
-        <a class="cards__link cards__link_type_icon" href="https://docs.google.com/forms/d/e/1FAIpQLScm8kMaiwo1zdZDeUROQdwWpoXVQOZPn-s9pYVoKu5U-Gg7TA/viewform" target="_blank">
-          <img class="cards__icon" src="img/survey_200.png">
-        </a>
-        <p class="cards__description">Опрос по&nbsp;книге «Первый лис на&nbsp;Луне». Вы&nbsp;прочитали книгу и&nbsp;у&nbsp;вас есть комментарии? Этот опрос создан, чтобы вы&nbsp;могли высказать своё мнение о&nbsp;книге. Давайте делать круто вместе&nbsp;:)</p>
-        <a class="cards__link cards__link_type_action" href="https://docs.google.com/forms/d/e/1FAIpQLScm8kMaiwo1zdZDeUROQdwWpoXVQOZPn-s9pYVoKu5U-Gg7TA/viewform" target="_blank">ПРОЙТИ ОПРОС</a>
-      </div>
       <div class="cards__card cards__card_type_horse">
         <a class="cards__link cards__link_type_icon" href="not-about-horse/">
-          <img class="cards__icon" src="img/horse-cover_200.jpg">
+          <img class="cards__icon" src="img/button-horse.png">
         </a>
-        <p class="cards__description"><span class="cards__title">«Эта сказка не&nbsp;про лошадь»</span>&nbsp;— Сборник коротких сказок про космических лесных зверей. И&nbsp;кстати, присоединяйтесь к&nbsp;созданию :)</p>
+        <p class="cards__description"><span class="cards__title">«Эта сказка не&nbsp;про лошадь»</span>&nbsp;— Сборник коротких сказок про космических лесных зверей.</p>
+        <a class="cards__link cards__link_type_action" href="not-about-horse/">ЧИТАТЬ!</a>
+      </div>
+      <div class="cards__card cards__card_type_project">
+        <a class="cards__link cards__link_type_icon" href="https://hello.maribooks.ru">
+          <img class="cards__icon" src="img/button-project.png">
+        </a>
+        <p class="cards__description"><span class="cards__title">Полезные книги</span>&nbsp;— узнайте про наш проект</p>
+        <a class="cards__link cards__link_type_action" href="https://hello.maribooks.ru">ПОЗНАКОМИТЬСЯ</a>
+      </div>
+      <div class="cards__card cards__card_type_fox">
+        <a class="cards__link cards__link_type_icon" href="first-fox-on-the-moon/">
+          <img class="cards__icon" src="img/button-fox.png">
+        </a>
+        <p class="cards__description"><span class="cards__title">«Первый лис на&nbsp;Луне»</span>&nbsp;— проектное мышление для детей: с&nbsp;главным героем Лисом мы узнаем, как важно планировать и&nbsp;делать выводы, а&nbsp;ещё, что если очень захотеть, можно в&nbsp;космос улететь&nbsp;:)</p>
         <a class="cards__link cards__link_type_action" href="not-about-horse/">ЧИТАТЬ!</a>
       </div>
     </div>
   </main>
-  <footer class="page__footer">
+  <!-- <footer class="page__footer">
     <a
       class="instalink"
       href="https://www.instagram.com/maristorii/"
@@ -162,7 +201,7 @@
     >
       <img class="instalink__icon" src="img/insta_400.png">
     </a>
-  </footer>
+  </footer> -->
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript" >
     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
