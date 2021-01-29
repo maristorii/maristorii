@@ -31,42 +31,38 @@
     }
     .cards {
       width: 100%;
-      max-width: 1920px;
+      max-width: 500px;
       position: relative;
       margin: 10px auto;
       margin-top: 80px;
     }
-    .cards::before {
-      content: '';
-      display: block;
-      padding-top: 20%;
-    }
-    .cards::after {
-      content: '';
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      pointer-events: none;
-      background-image: url('img/back_desktop_2000.png');
-      background-repeat: no-repeat;
-      background-size: 72.62% auto;
-      background-position: 40% 58%;
-    }
     .cards__card {
-      position: absolute;
       box-sizing: border-box;
-      width: 16.68%;
+      width: 100%;
       font-family: Arial, Helvetica, sans-serif;
       color: #3f2a0b;
+      display: grid;
+      grid-template-areas: 'icon description' 'icon button' 'icon .';
+      gap: var(--margin);
+      margin-top: 50px;
     }
     .cards__icon {
+      grid-area: icon;
+      width: 180px;
+      justify-self: center;
+    }
+    .cards__icon img {
       width: 100%;
     }
     .cards__description {
+      grid-area: description;
       margin: 0;
-      width: 140%;
+    }
+    .cards__description > p:first-child {
+      margin-top: 0;
+    }
+    .cards__description > p:last-child {
+      margin-bottom: 0;
     }
     .cards__title {
       font-weight: bold;
@@ -76,13 +72,13 @@
     .cards__link_type_action:hover,
     .cards__link_type_action:active,
     .cards__link_type_action:visited {
-      margin-top: var(--margin);
       font-family: 'Neucha', cursive;
       font-size: var(--action-size);
       text-decoration: none;
       color: var(--color);
     }
     .cards__link_type_action {
+      grid-area: button;
       display: block;
       width: max-content;
       border-radius: 4px;
@@ -112,42 +108,13 @@
       background-color: #762c00;
       --color: #fad0ac;
     }
-    @media all and (max-width: 800px) {
-      .cards {
-        margin-top: 10px;
-      }
-      .cards::before {
-        padding-top: 100%;
-      }
-      .cards::after {
-        background-image: url('img/back_mobile_1080.png');
-        background-size: 82.33% auto;
-        background-position: 50% 94%;
-      }
+    @media all and (max-width: 450px) {
       .cards__card {
-        width: 37.97%;
-      }
-      .cards__card_type_horse {
-        top: 0;
-        left: 9%;
-      }
-      .cards__card_type_project {
-        top: 37.5%;
-        left: 49%;
-      }
-      .cards__card_type_fox {
-        top: 72.5%;
-        left: 32%;
-      }
-      .cards__icon {
-        width: 100%;
-      }
-      .cards__description {
-        width: 140%;
-        display: none;
+        grid-template-areas: 'icon' 'description' 'button';
+        padding: var(--margin);
       }
       .cards__link_type_action {
-        display: none;
+        justify-self: end;
       }
     }
 
@@ -170,24 +137,28 @@
   <main class="page__content">
     <div class="cards">
       <div class="cards__card cards__card_type_horse">
-        <a class="cards__link cards__link_type_icon" href="not-about-horse/">
-          <img class="cards__icon" src="img/button-horse.png">
+        <img class="cards__icon" src="img/portrait.png">
+        <div class="cards__description">
+          <p>
+            Я Марьям, руководитель проектов в ИТ, а ещё я создаю детские интерактивные книги (эдакий рисующий менеджер :) ), с которыми вы можете познакомиться на этой странице.
+          </p>
+          <p>
+            Ещё я делаю полезные и красивые настенные игры и делюсь идеями, как научить ребёнка планировать, ставить цели и прочим менеджерским навыкам – обо всём этом можно почитать на моей странице или задать мне вопросы лично. Приятно познакомиться!
+          </p>
+        </div>
+      </div>
+      <div class="cards__card cards__card_type_horse">
+        <a class="cards__icon cards__link cards__link_type_icon" href="not-about-horse/">
+          <img src="img/button-horse.png">
         </a>
-        <p class="cards__description"><span class="cards__title">«Эта сказка не&nbsp;про лошадь»</span>&nbsp;— Сборник коротких сказок про космических лесных зверей.</p>
+        <p class="cards__description"><span class="cards__title">«Эта сказка не&nbsp;про лошадь»</span>&nbsp;— сборник коротких историй, в создании которого вы тоже можете принять участие (как приятно будет читать ребёнку свою сказку, иллюстрированную «живыми» картинками).</p>
         <a class="cards__link cards__link_type_action" href="not-about-horse/">ЧИТАТЬ!</a>
       </div>
-      <div class="cards__card cards__card_type_project">
-        <a class="cards__link cards__link_type_icon" href="https://hello.maribooks.ru">
-          <img class="cards__icon" src="img/button-project.png">
-        </a>
-        <p class="cards__description"><span class="cards__title">Полезные книги</span>&nbsp;— узнайте про наш проект</p>
-        <a class="cards__link cards__link_type_action" href="https://hello.maribooks.ru">ПОЗНАКОМИТЬСЯ</a>
-      </div>
       <div class="cards__card cards__card_type_fox">
-        <a class="cards__link cards__link_type_icon" href="first-fox-on-the-moon/">
-          <img class="cards__icon" src="img/button-fox.png">
+        <a class="cards__icon cards__link cards__link_type_icon" href="first-fox-on-the-moon/">
+          <img src="img/button-fox.png">
         </a>
-        <p class="cards__description"><span class="cards__title">«Первый лис на&nbsp;Луне»</span>&nbsp;— проектное мышление для детей: с&nbsp;главным героем Лисом мы узнаем, как важно планировать и&nbsp;делать выводы, а&nbsp;ещё, что если очень захотеть, можно в&nbsp;космос улететь&nbsp;:)</p>
+        <p class="cards__description">В книге <span class="cards__title">«Первый лис на&nbsp;Луне»</span> детям на доступном языке рассказывается про цели и планирование, про то, как важно делать выводы, и что ошибаться – не страшно, а даже полезно. А ещё, что, если очень захотеть, можно в космос улететь.</p>
         <a class="cards__link cards__link_type_action" href="first-fox-on-the-moon/">ЧИТАТЬ!</a>
       </div>
     </div>
